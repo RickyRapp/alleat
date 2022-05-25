@@ -17,18 +17,7 @@ app.use('/restaurants', restaurantRoute)
 
 const bookingRoute = require('./routes/bookings')
 app.use('/bookings', bookingRoute)
-
-
-
-//get requests
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
-});
-
-app.get("/", function (req, res) {
-  res.send('we on home')
-})
-
+  
 
 
 //connect to db
