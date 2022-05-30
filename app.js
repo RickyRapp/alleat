@@ -18,7 +18,11 @@ app.use('/restaurants', restaurantRoute)
 const bookingRoute = require('./routes/bookings')
 app.use('/bookings', bookingRoute)
   
-
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 
 //connect to db
 mongoose.connect(
