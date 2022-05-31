@@ -87,7 +87,7 @@ router.delete('/deleteCategory/:id', getCategory, async (req, res) => {
     catch (err){
         return res.status(500).json({message:err.message})
     }
-    res.highestCat = highestCat[0].categoryNum  
+    res.highestCat = highestCat.length>0 ? highestCat[0].categoryNum : 0
     console.log(req.body.category)
     const category = new Categories({
        // catName: req.body.inputCategory,
