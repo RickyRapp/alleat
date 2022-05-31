@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 
 const SchemaCategory = mongoose.Schema({
-    catName: {
+    categoryName: {
         type:String,
         require: true 
     } ,  
-    catNum: {
+    categoryNum: {
         type:Number,
         require:true
     } 

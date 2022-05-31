@@ -5,8 +5,9 @@ const RestaurantSchema = mongoose.Schema({
         type:String,
         require:true
     } ,
-    catNum:  {
-        type:mongoose.Schema.Types.ObjectId,ref:'Categories'
+    categoryNum:  {
+        type:Number,
+        require:true
     } ,
     address: {
         type:String,

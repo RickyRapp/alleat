@@ -14,7 +14,8 @@ const BookingSchema = mongoose.Schema({
         require:true
     } ,
     restaurantNum:{
-        type:mongoose.Schema.Types.ObjectId,ref:'Restaurants'
+        type:Number, 
+        require:true
     } 
 })
 

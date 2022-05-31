@@ -9,20 +9,16 @@ app.use(bodyParser.json());
 
 //midleware
 
-const categoryRoute = require('./routes/categories')
+const categoryRoute = require('./NewRoutes/categories')
 app.use('/categories', categoryRoute)
 
-const restaurantRoute = require('./routes/restaurants')
+const restaurantRoute = require('./NewRoutes/restaurants')
 app.use('/restaurants', restaurantRoute)
 
-const bookingRoute = require('./routes/bookings')
+const bookingRoute = require('./NewRoutes/bookings')
 app.use('/bookings', bookingRoute)
   
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-})
+
 
 //connect to db
 mongoose.connect(
