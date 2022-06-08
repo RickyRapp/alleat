@@ -15,7 +15,7 @@ router.use(function (req, res, next) {
     try{
         const category = await Categories.find()
         res.json(category)
-    }
+    } 
     catch
         (err){
             res.status(500).json({message:err.message})

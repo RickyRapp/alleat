@@ -18,12 +18,28 @@ router.get('/', async (req, res) => {
   
 
  //get one booking
-router.get('/:id', getBooking,(req,res)=> {
-    res.json(res.booking)
-})
+//router.get('/:id', getBooking,(req,res)=> {
+ //   res.json(res.booking)
+//})
+ 
+
+ ///get one booking
+ router.get('/getBooking',  async function getBooking(req, res){
+    let booking 
+    try {
+        booking = await Bookings.find({ 'restaurantNum': req.query.restaurantNum})
+         if(booking==null){
+            return res.status(404).json({message: "cannot find booking!!"})
+        }
+    
+    }
+    catch (err){
+        return res.status(500).json({message:err.message})
+    }
+    res.json(booking)
+    } )
 
 
- ///updating one booking
 
  router.patch('/:id', getBooking, async (req, res) => {
     if(req.body.clientName!=null){
@@ -48,7 +64,7 @@ router.get('/:id', getBooking,(req,res)=> {
 })
 
 //delete one booking
-router.delete('/:id', getBooking, async (req, res) => {
+router.delete('getBooking/:id', getBooking, async (req, res) => {
     try{
         await res.booking.remove()
         res.json({message: "deleted successfully!"})
@@ -62,9 +78,9 @@ router.delete('/:id', getBooking, async (req, res) => {
  async function getBooking(req, res, next){
     let booking 
     try {
-        booking = await Bookings.findById(req.params.id)
+        booking = await Bookings.findById(req.params.restaurantNum)
         if(booking==null){
-            return res.status(404).json({message: "cannot find booking"})
+            return res.status(404).json({message: "cannot find booking..."})
         }
     
     }
@@ -78,7 +94,7 @@ router.delete('/:id', getBooking, async (req, res) => {
  
 
  //post something
- router.post('/', async (req, res) => {
+ router.post('/addBooking', async (req, res) => {
 
     let highestBooking
     try {
