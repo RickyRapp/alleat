@@ -26,6 +26,7 @@ router.get('/:id', getCategory,(req,res)=> {
 })
  
  router.patch('/:id', getCategory, async (req, res) => {
+     console.log(req.body)
     if(req.body.categoryName){
         res.category.categoryName = req.body.categoryName
     }
@@ -91,19 +92,6 @@ router.delete('/:id', getCategory, async (req, res) => {
             res.status(400).json({message:err.message})
         } 
  });
-  
-router.post('/', (req,res) => {
-    const category = new Post({
-        categoryName: req.body.categoryName,
-        categoryNum: req.body.categoryNum
-    });
-
-    category.save()
-    .exec()
-    .then(data => {
-        res.json(data);
-    }) 
- }); 
- 
+   
 
 module.exports = router;

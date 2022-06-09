@@ -2,21 +2,17 @@ const express = require('express');
 const router = express.Router();
 const Bookings = require('../models/Bookings')  
  
-router.get('/', async (req, res) => {
-    try{
-        const booking = await Bookings.find()
-        res.json(booking)
-    }
-    catch
-        (err){
-            res.status(500).json({message:err.message})
-        } 
- });
+ 
     
  router.get('/',  async function getBooking(req, res){
     let booking 
     try {
-        booking = await Bookings.find({ 'restaurantNum': req.query.restaurantNum})
+        if (req.query.restaurantNum){
+            booking = await Bookings.find({ 'restaurantNum': req.query.restaurantNum})
+        }
+        else{
+            booking = await Bookings.find()
+        }
          if(!booking){
             return res.status(404).json({message: "cannot find booking!!"})
         }
@@ -95,8 +91,11 @@ router.delete('/:id', getBooking, async (req, res) => {
         res.highestBooking = highestBooking[0].bookingNum 
     }
 
+    console.log(req.body)
+    console.log(req.body.newReservationName)
     const booking = new Bookings({
-        clientName: req.body.clientName,
+        //const {clientName, restaurantNum, date, bookingNum} =  req.body
+        clientName: req.body.reservationName,
         restaurantNum: req.body.restaurantNum,
         date: req.body.date,
         bookingNum: (res.highestBooking)+1

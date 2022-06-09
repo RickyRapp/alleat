@@ -16,20 +16,21 @@ const Restaurants = require('../models/Restaurants')
  router.get('/:id', getRestaurant,(req,res)=> {
     res.json(res.restaurant)
 })
- 
- router.patch('/:id', getRestaurant, async (req, res) => {
-    if(req.body.name){
-        res.restaurant.name = req.body.name
-    }
-    if(req.body.categoryNum){
-        res.restaurant.categoryNum = req.body.categoryNum
-    }
-    if(req.body.address){
-        res.restaurant.address = req.body.address
-    }
-    if(req.body.restaurantNum){
+  
+router.patch('/:id', getRestaurant, async (req, res) => { 
+     console.log(req.body)  
+     if (req.body.newRestaurantName){ 
+        res.restaurant.name = req.body.newRestaurantName
+     }
+     if (req.body.newAssociatedCategory){
+        res.restaurant.categoryNum = req.body.newAssociatedCategory
+     }
+     if (req.body.newRestaurantAddress){
+        res.restaurant.address = req.body.newRestaurantAddress
+     }
+     if (req.body.restaurantNum){
         res.restaurant.restaurantNum = req.body.restaurantNum
-    }
+     }
     try{
         const updatedResName = await res.restaurant.save()
         res.json(updatedResName)
@@ -80,12 +81,11 @@ router.delete('/:id', getRestaurant, async (req, res) => {
     }
     else {
         res.highestRes = highestRes[0].restaurantNum 
-    }
- 
+    }  
     const restaurant = new Restaurants({
-        name: req.body.name,
-        categoryNum: req.body.categoryNum,
-        address: req.body.address,
+        name: req.body.newRestaurantsInfo.newRestaurantName.restaurantName,
+        categoryNum: req.body.newRestaurantsInfo.newAssociatedCategory.associatedCategory,
+        address: req.body.newRestaurantsInfo.newRestaurantAddress.restaurantAddress, 
         restaurantNum: (res.highestRes)+1
     })
     try{
@@ -98,21 +98,5 @@ router.delete('/:id', getRestaurant, async (req, res) => {
         } 
  });
  
- 
-router.post('/', (req,res) => {
-    const restaurant = new Post({
-        name: req.body.name,
-        categoryNum: req.body.categoryNum,
-        address: req.body.address,
-        restaurantNum: req.body.restaurantNum 
-    });
-
-    restaurant.save()
-    .exec()
-    .then(data => {
-        res.json(data);
-    }) 
- }); 
-
 
 module.exports = router;
