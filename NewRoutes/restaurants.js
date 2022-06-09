@@ -1,11 +1,8 @@
-//routes
 const express = require('express');
 const router = express.Router();
 const Restaurants = require('../models/Restaurants')  
 
-
-//get all Restaurants 
-router.get('/', async (req, res) => {
+ router.get('/', async (req, res) => {
     try{
         const restaurant = await Restaurants.find()
         res.json(restaurant)
@@ -16,26 +13,21 @@ router.get('/', async (req, res) => {
         } 
  });
   
-
- //get one restaurant
-router.get('/:id', getRestaurant,(req,res)=> {
+ router.get('/:id', getRestaurant,(req,res)=> {
     res.json(res.restaurant)
 })
-
-
- ///updating one restaurant
-
+ 
  router.patch('/:id', getRestaurant, async (req, res) => {
-    if(req.body.name!=null){
+    if(req.body.name){
         res.restaurant.name = req.body.name
     }
-    if(req.body.categoryNum!=null){
+    if(req.body.categoryNum){
         res.restaurant.categoryNum = req.body.categoryNum
     }
-    if(req.body.address!=null){
+    if(req.body.address){
         res.restaurant.address = req.body.address
     }
-    if(req.body.restaurantNum!=null){
+    if(req.body.restaurantNum){
         res.restaurant.restaurantNum = req.body.restaurantNum
     }
     try{
@@ -46,8 +38,7 @@ router.get('/:id', getRestaurant,(req,res)=> {
         res.status(400).json({message:err.message})
     }
 })
-
-//delete one restaurant
+ 
 router.delete('/:id', getRestaurant, async (req, res) => {
     try{
         await res.restaurant.remove()
@@ -63,7 +54,7 @@ router.delete('/:id', getRestaurant, async (req, res) => {
     let restaurant 
     try {
         restaurant = await Restaurants.findById(req.params.id)
-        if(restaurant==null){
+        if(!restaurant){
             return res.status(404).json({message: "cannot find restaurant"})
         }
     
@@ -71,14 +62,11 @@ router.delete('/:id', getRestaurant, async (req, res) => {
     catch (err){
         return res.status(500).json({message:err.message})
     }
-    res.restaurant = restaurant
-    //console.log(restaurant)
+    res.restaurant = restaurant 
     next()
     }
  
-
- //post something
- router.post('/addRestaurant', async (req, res) => {
+ router.post('/', async (req, res) => {
 
     let highestRes
     try {
@@ -93,8 +81,7 @@ router.delete('/:id', getRestaurant, async (req, res) => {
     else {
         res.highestRes = highestRes[0].restaurantNum 
     }
-
-    console.log(req.body.categoryNum)
+ 
     const restaurant = new Restaurants({
         name: req.body.name,
         categoryNum: req.body.categoryNum,
@@ -111,11 +98,7 @@ router.delete('/:id', getRestaurant, async (req, res) => {
         } 
  });
  
-
- router.get("/specific", function(req, res) {
-     res.send('this is specific post')
-  })
-
+ 
 router.post('/', (req,res) => {
     const restaurant = new Post({
         name: req.body.name,

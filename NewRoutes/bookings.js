@@ -1,10 +1,7 @@
-//routes
 const express = require('express');
 const router = express.Router();
 const Bookings = require('../models/Bookings')  
-
-
-//get all Bookings 
+ 
 router.get('/', async (req, res) => {
     try{
         const booking = await Bookings.find()
@@ -15,20 +12,12 @@ router.get('/', async (req, res) => {
             res.status(500).json({message:err.message})
         } 
  });
-  
-
- //get one booking
-//router.get('/:id', getBooking,(req,res)=> {
- //   res.json(res.booking)
-//})
- 
-
- ///get one booking
- router.get('/getBooking',  async function getBooking(req, res){
+    
+ router.get('/',  async function getBooking(req, res){
     let booking 
     try {
         booking = await Bookings.find({ 'restaurantNum': req.query.restaurantNum})
-         if(booking==null){
+         if(!booking){
             return res.status(404).json({message: "cannot find booking!!"})
         }
     
@@ -42,18 +31,18 @@ router.get('/', async (req, res) => {
 
 
  router.patch('/:id', getBooking, async (req, res) => {
-    if(req.body.clientName!=null){
+    if(req.body.clientName){
         res.booking.clientName = req.body.clientName
     }
-    if(req.body.bookingNum!=null){
+    if(req.body.bookingNum){
         res.booking.bookingNum = req.body.bookingNum
     }
-    if(req.body.date!=null){
+    if(req.body.date){
         res.booking.date = req.body.date
     }
-    if(req.body.restaurantNum!=null){
+    if(req.body.restaurantNum){
         res.booking.restaurantNum = req.body.restaurantNum
-    }
+    } 
     try{
         const updatedBooking = await res.booking.save()
         res.json(updatedBooking)
@@ -62,9 +51,8 @@ router.get('/', async (req, res) => {
         res.status(400).json({message:err.message})
     }
 })
-
-//delete one booking
-router.delete('getBooking/:id', getBooking, async (req, res) => {
+ 
+router.delete('/:id', getBooking, async (req, res) => {
     try{
         await res.booking.remove()
         res.json({message: "deleted successfully!"})
@@ -79,7 +67,7 @@ router.delete('getBooking/:id', getBooking, async (req, res) => {
     let booking 
     try {
         booking = await Bookings.findById(req.params.restaurantNum)
-        if(booking==null){
+        if(!booking){
             return res.status(404).json({message: "cannot find booking..."})
         }
     
@@ -87,14 +75,11 @@ router.delete('getBooking/:id', getBooking, async (req, res) => {
     catch (err){
         return res.status(500).json({message:err.message})
     }
-    res.booking = booking
-    //console.log(booking)
+    res.booking = booking 
     next()
     }
- 
-
- //post something
- router.post('/addBooking', async (req, res) => {
+  
+ router.post('/', async (req, res) => {
 
     let highestBooking
     try {
