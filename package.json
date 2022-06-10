@@ -4,8 +4,8 @@
   "description": "Lists all restaurants and restaurant categories and well as details of thos restaurants.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
-  }, 
+    "start": "nodemon index.js"
+  },
   "proxy":"http://localhost:3000",
   "author": "Ricky Rappaport",
   "license": "ISC",
