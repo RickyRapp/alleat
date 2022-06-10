@@ -1,26 +1,21 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const bodyParser = require('body-parser');
-//const Router = express.Router();
+const bodyParser = require('body-parser'); 
 require('dotenv/config')
 
 app.use(bodyParser.json());
-
-//midleware
-
-const categoryRoute = require('./routes/categories')
+ 
+const categoryRoute = require('./NewRoutes/categories')
 app.use('/categories', categoryRoute)
 
-const restaurantRoute = require('./routes/restaurants')
+const restaurantRoute = require('./NewRoutes/restaurants')
 app.use('/restaurants', restaurantRoute)
 
-const bookingRoute = require('./routes/bookings')
+const bookingRoute = require('./NewRoutes/bookings')
 app.use('/bookings', bookingRoute)
   
-
-
-//connect to db
+ 
 mongoose.connect(
   process.env.DB_CONNECTION,
   { useNewUrlParser: true },

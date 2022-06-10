@@ -14,7 +14,7 @@ const BookingSchema = mongoose.Schema({
         require:true
     } ,
     restaurantNum:{
-        type:Number,
+        type:Number, 
         require:true
     } 
 })

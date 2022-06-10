@@ -5,9 +5,9 @@ const RestaurantSchema = mongoose.Schema({
         type:String,
         require:true
     } ,
-    catNum:  {
+    categoryNum:  {
         type:Number,
-        require:true 
+        require:true
     } ,
     address: {
         type:String,

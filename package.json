@@ -1,0 +1,30 @@
+{
+  "name": "restaurants",
+  "version": "1.0.0",
+  "description": "Lists all restaurants and restaurant categories and well as details of thos restaurants.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  }, 
+  "proxy":"http://localhost:3000",
+  "author": "Ricky Rappaport",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "connect-mongo": "^4.6.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "express-sessions": "^1.0.6",
+    "method-override": "^3.0.0",
+    "moment": "^2.29.3",
+    "mongoose": "^6.3.3",
+    "morgan": "^1.10.0",
+    "passport": "^0.5.3",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.16"
+  }
+}
