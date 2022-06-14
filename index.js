@@ -1,9 +1,10 @@
-const express = require("express");
+const express = require('express')
+const path = require('path') 
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
-//const Router = express.Router();
 require('dotenv/config')
+
 
 app.use(bodyParser.json());
 
@@ -21,14 +22,30 @@ app.use('/bookings', bookingRoute)
 
 
 //connect to db
+
+const uri = "mongodb+srv://RickyR:Rbs101094!@cluster0.g8isb.mongodb.net/alleat?retryWrites=true&w=majority";
 mongoose.connect(
-  process.env.DB_CONNECTION,
+  uri,
   { useNewUrlParser: true },
   () => {
     console.log('connected to db')
   })
 
+ 
+  /*const { MongoClient, ServerApiVersion } = require('mongodb');
+  const uri = "mongodb+srv://RickyR:Rbs101094!@cluster0.g8isb.mongodb.net/alleat?retryWrites=true&w=majority";
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+  client.connect(err => {
+    const collection = client.db("test").collection("devices");
+    // perform actions on the collection object
+    client.close();
+  });
+  */
 
-app.listen(3001, () => {
-  console.log("Server is running at port 3001");
+app.listen(process.env.PORT || 3001, () => {
+  console.log("Server is running at port");
 });
+
+ 
+
+  
