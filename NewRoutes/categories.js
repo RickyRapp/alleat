@@ -3,12 +3,16 @@ const express = require('express');
 const { schema } = require('../models/Categories');
 const router = express.Router();
 const Categories = require('../models/Categories') 
+const cors = require("cors");
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE"); 
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   })
+
+router.use(cors());
 
 //get all categories  
  router.get('/', async (req, res) => {
@@ -48,7 +52,7 @@ router.get('/:id', getCategory,(req,res)=> {
 })
 
 //delete one category
-router.delete('/deleteCategory/:id', getCategory, async (req, res) => {
+router.delete('/:id', getCategory, async (req, res) => {
     try{
         console.log("got here")
         await res.category.remove()
@@ -78,7 +82,7 @@ router.delete('/deleteCategory/:id', getCategory, async (req, res) => {
 }
   
  //post something
- router.post('/addCategory', async (req, res) => {
+ router.post('/', async (req, res) => {
 
     let highestCat 
     try {
@@ -105,19 +109,6 @@ router.delete('/deleteCategory/:id', getCategory, async (req, res) => {
             res.status(400).json({message:err.message})
         } 
  });
-  
-router.post('/', (req,res) => {
-    const category = new Post({
-        categoryName: req.body.categoryName,
-        categoryNum: req.body.categoryNum
-    });
-
-    category.save()
-    .exec()
-    .then(data => {
-        res.json(data);
-    }) 
- }); 
- 
+   
 
 module.exports = router;

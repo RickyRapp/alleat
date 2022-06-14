@@ -1,43 +1,52 @@
-//routes
 const express = require('express');
 const router = express.Router();
 const Bookings = require('../models/Bookings')  
+const cors = require("cors");
+ 
+router.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE"); 
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  }) 
 
+router.use(cors());
 
-//get all Bookings 
-router.get('/', async (req, res) => {
-    try{
-        const booking = await Bookings.find()
-        res.json(booking)
+ router.get('/',  async function getBooking(req, res){
+    let booking 
+    try {
+        if (req.query.restaurantNum){
+            booking = await Bookings.find({ 'restaurantNum': req.query.restaurantNum})
+        }
+        else{
+            booking = await Bookings.find()
+        }
+         if(!booking){
+            return res.status(404).json({message: "cannot find booking!!"})
+        }
+    
     }
-    catch
-        (err){
-            res.status(500).json({message:err.message})
-        } 
- });
-  
-
- //get one booking
-router.get('/:id', getBooking,(req,res)=> {
-    res.json(res.booking)
-})
+    catch (err){
+        return res.status(500).json({message:err.message})
+    }
+    res.json(booking)
+    } )
 
 
- ///updating one booking
 
  router.patch('/:id', getBooking, async (req, res) => {
-    if(req.body.clientName!=null){
+    if(req.body.clientName){
         res.booking.clientName = req.body.clientName
     }
-    if(req.body.bookingNum!=null){
+    if(req.body.bookingNum){
         res.booking.bookingNum = req.body.bookingNum
     }
-    if(req.body.date!=null){
+    if(req.body.date){
         res.booking.date = req.body.date
     }
-    if(req.body.restaurantNum!=null){
+    if(req.body.restaurantNum){
         res.booking.restaurantNum = req.body.restaurantNum
-    }
+    } 
     try{
         const updatedBooking = await res.booking.save()
         res.json(updatedBooking)
@@ -46,8 +55,7 @@ router.get('/:id', getBooking,(req,res)=> {
         res.status(400).json({message:err.message})
     }
 })
-
-//delete one booking
+ 
 router.delete('/:id', getBooking, async (req, res) => {
     try{
         await res.booking.remove()
@@ -62,22 +70,19 @@ router.delete('/:id', getBooking, async (req, res) => {
  async function getBooking(req, res, next){
     let booking 
     try {
-        booking = await Bookings.findById(req.params.id)
-        if(booking==null){
-            return res.status(404).json({message: "cannot find booking"})
+        booking = await Bookings.findById(req.params.restaurantNum)
+        if(!booking){
+            return res.status(404).json({message: "cannot find booking..."})
         }
     
     }
     catch (err){
         return res.status(500).json({message:err.message})
     }
-    res.booking = booking
-    //console.log(booking)
+    res.booking = booking 
     next()
     }
- 
-
- //post something
+  
  router.post('/', async (req, res) => {
 
     let highestBooking
@@ -94,8 +99,11 @@ router.delete('/:id', getBooking, async (req, res) => {
         res.highestBooking = highestBooking[0].bookingNum 
     }
 
+    console.log(req.body)
+    console.log(req.body.newReservationName)
     const booking = new Bookings({
-        clientName: req.body.clientName,
+        //const {clientName, restaurantNum, date, bookingNum} =  req.body
+        clientName: req.body.reservationName,
         restaurantNum: req.body.restaurantNum,
         date: req.body.date,
         bookingNum: (res.highestBooking)+1
