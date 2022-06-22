@@ -35,18 +35,7 @@ router.use(cors());
 
 
  router.patch('/:id', getBooking, async (req, res) => {
-    if(req.body.clientName){
-        res.booking.clientName = req.body.clientName
-    }
-    if(req.body.bookingNum){
-        res.booking.bookingNum = req.body.bookingNum
-    }
-    if(req.body.date){
-        res.booking.date = req.body.date
-    }
-    if(req.body.restaurantNum){
-        res.booking.restaurantNum = req.body.restaurantNum
-    } 
+    res.booking = req.body
     try{
         const updatedBooking = await res.booking.save()
         res.json(updatedBooking)
@@ -98,10 +87,7 @@ router.delete('/:id', getBooking, async (req, res) => {
     else {
         res.highestBooking = highestBooking[0].bookingNum 
     }
-
-    console.log(req.body)
-    console.log(req.body.newReservationName)
-    const booking = new Bookings({
+     const booking = new Bookings({
         //const {clientName, restaurantNum, date, bookingNum} =  req.body
         clientName: req.body.reservationName,
         restaurantNum: req.body.restaurantNum,

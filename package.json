@@ -29,9 +29,11 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "cypress": "^10.1.0",
     "got": "^11.3.0",
     "nodemon": "^2.0.16",
-    "tape": "^4.7.0"
+    "tape": "^4.7.0",
+    "webpack": "^5.73.0"
   },
   "repository": {
     "type": "git",

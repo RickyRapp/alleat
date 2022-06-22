@@ -12,9 +12,36 @@ router.use(function (req, res, next) {
     next();
   })
 
-router.use(cors());
+router.use(cors()); 
 
- router.post('/', async (req, res) => {
+ router.get('/',  async function getRestaurant(req, res){
+    let restaurant    
+    try { 
+        if (!req.query.categoryNum && !req.query.restaurantNum){
+            restaurant = await Restaurants.find()  
+        }
+        else{
+            if(req.query.restaurantNum){ 
+                restaurant = await Restaurants.findOne({ 'restaurantNum': req.query.restaurantNum})
+            }
+            else{ 
+                restaurant = await Restaurants.find({ 'categoryNum': req.query.categoryNum})
+            }
+        }
+         if(!restaurant){
+            return res.status(404).json({message: "cannot find restaurant!!"})
+        }
+    
+    }
+    catch (err){
+        return res.status(500).json({message:err.message})
+    } 
+    res.json(restaurant)
+} )
+ 
+router.post('/', async (req, res) => {
+
+    console.log("posting")
 
     let highestRes
     try {
@@ -28,13 +55,13 @@ router.use(cors());
     }
     else {
         res.highestRes = highestRes[0].restaurantNum 
-    }  
+    }   
     const restaurant = new Restaurants({
-        name: req.body.newRestaurantsInfo.newRestaurantName,
-        categoryNum: req.body.newRestaurantsInfo.newAssociatedCategory,
-        address: req.body.newRestaurantsInfo.newRestaurantAddress, 
+        name: req.body.name,
+        categoryNum: req.body.categoryNum,
+        address: req.body.address, 
         restaurantNum: (res.highestRes)+1
-    })
+    }) 
     try{
         const newRestaurant = await restaurant.save() 
         res.status(201).json(newRestaurant)
@@ -90,28 +117,41 @@ router.delete('/:id', getRestaurant, async (req, res) => {
     next()
 }
 
- 
-router.patch('/:id', getRestaurant, async (req, res) => {
-    if(req.body.name!=null){
-        res.restaurant.name = req.body.name
+router.patch('/:id', getRestaurant, async (req, res) => { 
+    console.log(req.body)  
+    if (req.body.name){ 
+       res.restaurant.name = req.body.name
     }
-    if(req.body.categoryNum!=null){
-        res.restaurant.categoryNum = req.body.categoryNum
+    if (req.body.categoryNum){
+       res.restaurant.categoryNum = req.body.categoryNum
     }
-    if(req.body.address!=null){
-        res.restaurant.address = req.body.address
+    if (req.body.address){
+       res.restaurant.address = req.body.address
     }
-    if(req.body.restaurantNum!=null){
-        res.restaurant.restaurantNum = req.body.restaurantNum
+    if (req.body.restaurantNum){
+       res.restaurant.restaurantNum = req.body.restaurantNum
     }
-    try{
-        const updatedResName = await res.restaurant.save()
-        res.json(updatedResName)
-    }
-    catch (err){
-        res.status(400).json({message:err.message})
-    }
+   try{
+       const updatedResName = await res.restaurant.save()
+       res.json(updatedResName)
+   }
+   catch (err){
+       res.status(400).json({message:err.message})
+   }
 })
+//router.patch('/:id', getRestaurant, async (req, res) => { 
+ //   console.log(req.body)
+  ///  const body = req.body  
+    //res.body = body
+   // console.log(`res.restaurant ${body}`)
+    //try{
+    //    const updatedResName = await res.body.save()
+     //   res.json(updatedResName)
+   // }
+   // catch (err){
+     //   res.status(400).json({message:err.message})
+   // }
+//})
 
     
 

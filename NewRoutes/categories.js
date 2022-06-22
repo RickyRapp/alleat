@@ -32,7 +32,6 @@ router.get('/:id', getCategory,(req,res)=> {
     res.json(res.category)
 })
  
-
  ///updating one category
 
  router.patch('/:id', getCategory, async (req, res) => {
@@ -53,8 +52,7 @@ router.get('/:id', getCategory,(req,res)=> {
 
 //delete one category
 router.delete('/:id', getCategory, async (req, res) => {
-    try{
-        console.log("got here")
+    try{ 
         await res.category.remove()
         res.json({message: "deleted successfully!"})
     }
@@ -68,7 +66,7 @@ router.delete('/:id', getCategory, async (req, res) => {
     let category 
     try {
         category = await Categories.findById(req.params.id)
-        if(category==null){
+        if(!category){
             return res.status(404).json({message: "cannot find category"})
         }
     
@@ -76,8 +74,7 @@ router.delete('/:id', getCategory, async (req, res) => {
     catch (err){
         return res.status(500).json({message:err.message})
     }
-    res.category = category
-    //console.log(category)
+    res.category = category 
     next()
 }
   
@@ -93,9 +90,7 @@ router.delete('/:id', getCategory, async (req, res) => {
     }
     res.highestCat = highestCat.length>0 ? highestCat[0].categoryNum : 0
     console.log(req.body.category)
-    const category = new Categories({
-       // catName: req.body.inputCategory,
-        //catName: req.body.catName,
+    const category = new Categories({ 
         categoryName: req.body.category,
         categoryNum: (res.highestCat)+1
     })
